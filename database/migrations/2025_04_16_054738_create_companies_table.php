@@ -7,19 +7,17 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     public function up()
-{
-    Schema::create('companies', function (Blueprint $table) {
-        $table->id();
-        $table->string('company_name');
-        $table->string('representative_name')->default(''); // ←ここでデフォルト指定
-        $table->timestamps();
-    });
-}
+    {
+        Schema::create('companies', function (Blueprint $table) {
+            $table->id();
+            $table->string('company_name');
+            $table->string('representative_name')->default('');
+            $table->timestamps();
+        });
+    }
 
     public function down()
     {
-        Schema::table('companies', function (Blueprint $table) {
-            $table->string('representative_name')->nullable()->change();
-        });
+        Schema::dropIfExists('companies');
     }
 };
