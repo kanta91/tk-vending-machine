@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container">
+    <h1 class="mb-4">ログインしてください</h1>
     <h2 class="mb-4">ユーザーログイン画面</h2>
 
     @if (session('status'))
