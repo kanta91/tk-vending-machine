@@ -8,7 +8,7 @@ class ProductRequest extends FormRequest
 {
     public function authorize()
     {
-        // 誰でもアクセスできるならtrue。認可ロジックを入れるならここに書く
+        
         return true;
     }
 
