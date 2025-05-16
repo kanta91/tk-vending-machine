@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Company;
+use Illuminate\Support\Facades\DB;
+use App\Http\Requests\ProductRequest;
+
+
 
 class ProductController extends Controller
 {
@@ -30,71 +34,66 @@ class ProductController extends Controller
     }
 
     public function create()
-    {
-        return view('products.create');
-    }
+        {
+            $companies = Company::all();
+            return view('products.create', compact('companies'));
+        }
 
-    public function store(Request $request)
+
+    
+    public function store(ProductRequest $request)
     {
-        $validated = $request->validate([
-            'product_name' => 'required|string|max:255',
-            'company_name' => 'required|string|max:255',
-            'price' => 'required|numeric',
-            'comment' => 'nullable|string',
-            'stock' => 'required|integer',
-            'img_path' => 'nullable|image',
-        ]);
+        $validated = $request->validated();
 
         $validated['img_path'] = $request->hasFile('img_path')
-        ? $request->file('img_path')->store('products', 'public')
-        : null;
+            ? $request->file('img_path')->store('products', 'public')
+            : null;
 
-        // メーカーを company_name から検索または作成
-        $company = Company::firstOrCreate(['company_name' => $validated['company_name']]);
+        DB::transaction(function () use ($validated) {
+            if (!empty($validated['company_id'])) {
+                $company_id = $validated['company_id'];
+            } elseif (!empty($validated['new_company_name'])) {
+                $company = Company::firstOrCreate(['company_name' => $validated['new_company_name']]);
+                $company_id = $company->id;
+            } else {
+                throw new \Exception('メーカー名を選択または入力してください。');
+            }
 
-        // Product 作成
-        $product = new Product($validated);
-        $product->company_id = $company->id;
-        $product->save();
+            $product = new Product($validated);
+            $product->company_id = $company_id;
+            $product->save();
+        });
 
         return redirect()->route('products.index')->with('success', '商品を登録しました！');
     }
 
-    public function show(Product $product)
+    public function update(ProductRequest $request, Product $product)
     {
-        return view('products.show', compact('product'));
-    }
+        $validated = $request->validated();
 
-    public function edit(Product $product)
-    {
-        return view('products.edit', compact('product'));
-    }
-
-    public function update(Request $request, Product $product)
-    {
-        $validated = $request->validate([
-            'product_name' => 'required|string|max:255',
-            'company_name' => 'required|string|max:255',
-            'price' => 'required|numeric',
-            'comment' => 'nullable|string',
-            'stock' => 'required|integer',
-            'img_path' => 'nullable|image',
-        ]);
-
-        // 画像があるなら新しく保存、ないなら元の画像をそのまま使う
         $validated['img_path'] = $request->hasFile('img_path')
             ? $request->file('img_path')->store('products', 'public')
             : $product->img_path;
 
-        // メーカーを更新または新規作成
-        $company = Company::firstOrCreate(['company_name' => $validated['company_name']]);
+        DB::transaction(function () use ($validated, $product) {
+            if (!empty($validated['company_id'])) {
+                $company_id = $validated['company_id'];
+            } elseif (!empty($validated['new_company_name'])) {
+                $company = Company::firstOrCreate(['company_name' => $validated['new_company_name']]);
+                $company_id = $company->id;
+            } else {
+                throw new \Exception('メーカー名を選択または入力してください。');
+            }
 
-        $product->fill($validated);
-        $product->company_id = $company->id;
-        $product->save();
+            $product->fill($validated);
+            $product->company_id = $company_id;
+            $product->save();
+        });
 
         return redirect()->route('products.index')->with('success', '商品情報を更新しました！');
     }
+
+
 
     public function destroy($id)
     {
