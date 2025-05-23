@@ -49,6 +49,7 @@ class ProductController extends Controller
             ? $request->file('img_path')->store('products', 'public')
             : null;
 
+        try {
         DB::transaction(function () use ($validated) {
             if (!empty($validated['company_id'])) {
                 $company_id = $validated['company_id'];
@@ -64,7 +65,11 @@ class ProductController extends Controller
             $product->save();
         });
 
-        return redirect()->route('products.index')->with('success', '商品を登録しました！');
+            return redirect()->route('products.index')->with('success', '商品を登録しました！');
+        } catch (\Exception $e) {
+            return back()->with('error', '登録中にエラーが発生しました：' . $e->getMessage());
+        }
+
     }
 
     public function update(ProductRequest $request, Product $product)
@@ -102,4 +107,20 @@ class ProductController extends Controller
 
         return redirect()->route('products.index')->with('success', '商品を削除しました。');
     }
+
+    public function show($id)
+    {
+    $product = Product::findOrFail($id);
+    return view('products.show', compact('product'));
+    }
+
+
+    public function edit($id)
+    { 
+    $product = Product::findOrFail($id);
+    $companies = Company::all();
+
+    return view('products.edit', compact('product', 'companies'));
+    }
+
 }

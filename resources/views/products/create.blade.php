@@ -36,11 +36,6 @@
             </select>
         </div>
 
-        <div class="mb-3">
-            <label for="new_company_name" class="form-label">新しいメーカー名（未登録の場合）</label>
-            <input type="text" class="form-control" name="new_company_name" id="new_company_name" value="{{ old('new_company_name') }}">
-        </div>
-
 
         <div class="mb-3">
             <label for="price" class="form-label">価格</label>

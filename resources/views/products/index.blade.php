@@ -51,7 +51,7 @@
                     <img src="{{ asset('storage/' . $product->img_path) }}" alt="商品画像" width="80">
                 @endif
             </td>
-            <td><a href="{{ route('products.show', $product) }}">{{ $product->product_name }}</a></td>
+            <td>{{ $product->product_name }}</td>
             <td>¥{{ number_format($product->price) }}</td>
             <td>{{ $product->stock }}</td>
             <td>{{ $product->company->company_name ?? '―' }}</td>
