@@ -51,7 +51,6 @@
                 <label for="new_company_name" class="form-label">新しいメーカー名を入力（任意）</label>
                 <input type="text" name="new_company_name" id="new_company_name" class="form-control"
                     value="{{ old('new_company_name') }}">
-                <small class="text-muted">※ 上のセレクトボックスで選択しない場合のみ入力</small>
             </div>
 
 
