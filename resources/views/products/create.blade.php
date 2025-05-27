@@ -25,7 +25,7 @@
         </div>
 
        <div class="mb-3">
-            <label for="company_id" class="form-label">メーカー名（既存）</label>
+            <label for="company_id" class="form-label">メーカー名</label>
             <select class="form-control" name="company_id" id="company_id">
                 <option value="">-- メーカーを選択 --</option>
                 @foreach ($companies as $company)

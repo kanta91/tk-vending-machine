@@ -50,26 +50,15 @@ class ProductController extends Controller
             : null;
 
         try {
-        DB::transaction(function () use ($validated) {
-            if (!empty($validated['company_id'])) {
-                $company_id = $validated['company_id'];
-            } elseif (!empty($validated['new_company_name'])) {
-                $company = Company::firstOrCreate(['company_name' => $validated['new_company_name']]);
-                $company_id = $company->id;
-            } else {
-                throw new \Exception('メーカー名を選択または入力してください。');
-            }
-
-            $product = new Product($validated);
-            $product->company_id = $company_id;
-            $product->save();
-        });
+            DB::transaction(function () use ($validated) {
+                $product = new Product($validated);
+                $product->save();
+            });
 
             return redirect()->route('products.index')->with('success', '商品を登録しました！');
         } catch (\Exception $e) {
             return back()->with('error', '登録中にエラーが発生しました：' . $e->getMessage());
         }
-
     }
 
     public function update(ProductRequest $request, Product $product)
@@ -80,22 +69,16 @@ class ProductController extends Controller
             ? $request->file('img_path')->store('products', 'public')
             : $product->img_path;
 
-        DB::transaction(function () use ($validated, $product) {
-            if (!empty($validated['company_id'])) {
-                $company_id = $validated['company_id'];
-            } elseif (!empty($validated['new_company_name'])) {
-                $company = Company::firstOrCreate(['company_name' => $validated['new_company_name']]);
-                $company_id = $company->id;
-            } else {
-                throw new \Exception('メーカー名を選択または入力してください。');
-            }
+        try {
+            DB::transaction(function () use ($validated, $product) {
+                $product->fill($validated);
+                $product->save();
+            });
 
-            $product->fill($validated);
-            $product->company_id = $company_id;
-            $product->save();
-        });
-
-        return redirect()->route('products.index')->with('success', '商品情報を更新しました！');
+            return redirect()->route('products.index')->with('success', '商品情報を更新しました！');
+        } catch (\Exception $e) {
+            return back()->with('error', '更新中にエラーが発生しました：' . $e->getMessage());
+        }
     }
 
 

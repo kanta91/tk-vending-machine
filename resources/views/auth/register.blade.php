@@ -7,6 +7,19 @@
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
+
+        {{-- 名前 --}}
+        <div class="form-group mb-3">
+            <label for="user_name">名前</label>
+            <input id="user_name" type="text" class="form-control @error('user_name') is-invalid @enderror"
+                name="user_name" value="{{ old('user_name') }}" required autocomplete="user_name" autofocus>
+
+            @error('user_name')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
+        </div>
+
+
         {{-- メールアドレス --}}
         <div class="form-group mb-3">
             <label for="email">メールアドレス</label>
@@ -41,6 +54,9 @@
             <a class="btn btn-secondary" href="{{ route('login') }}">戻る</a>
             <button type="submit" class="btn btn-primary">新規登録</button>
         </div>
+
+        
+
     </form>
 </div>
 @endsection

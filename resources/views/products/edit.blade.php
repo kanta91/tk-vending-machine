@@ -34,24 +34,18 @@
                 </div>
 
                 
-                <div class="mb-3">
-                <label for="company_id" class="form-label">既存メーカーから選択</label>
-                <select name="company_id" id="company_id" class="form-control">
-                    <option value="">-- メーカーを選択 --</option>
-                    @foreach ($companies as $company)
-                        <option value="{{ $company->id }}"
-                            {{ old('company_id', $product->company_id) == $company->id ? 'selected' : '' }}>
-                            {{ $company->company_name }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label for="new_company_name" class="form-label">新しいメーカー名を入力（任意）</label>
-                <input type="text" name="new_company_name" id="new_company_name" class="form-control"
-                    value="{{ old('new_company_name') }}">
-            </div>
+               <div class="mb-3">
+                    <label for="company_id" class="form-label">メーカー</label>
+                    <select name="company_id" id="company_id" class="form-control">
+                        <option value="">-- メーカーを選択 --</option>
+                        @foreach ($companies as $company)
+                            <option value="{{ $company->id }}"
+                                {{ old('company_id', $product->company_id) == $company->id ? 'selected' : '' }}>
+                                {{ $company->company_name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
 
 
 
