@@ -16,7 +16,7 @@ class ProductRequest extends FormRequest
     {
         return [
             'product_name' => 'required|string|max:255',
-            'company_id' => 'nullable|exists:companies,id',
+            'company_id' => 'required|exists:companies,id',
             'price' => 'required|numeric|min:1',
             'comment' => 'nullable|string|max:1000',
             'stock' => 'required|integer|min:0',
@@ -30,6 +30,7 @@ class ProductRequest extends FormRequest
             'product_name.required' => '商品名は必須です。',
             'product_name.max' => '商品名は255文字以内で入力してください。',
             'company_id.exists' => '選択されたメーカーが無効です。',
+            'company_id.required' => 'メーカー名は必須です。',
             'price.required' => '価格は必須です。',
             'price.numeric' => '価格は数値で入力してください。',
             'price.min' => '価格は1円以上で入力してください。',

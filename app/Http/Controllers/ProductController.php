@@ -69,17 +69,12 @@ class ProductController extends Controller
             ? $request->file('img_path')->store('products', 'public')
             : $product->img_path;
 
-        try {
-            DB::transaction(function () use ($validated, $product) {
-                $product->fill($validated);
-                $product->save();
-            });
+        $product->fill($validated);
+        $product->save();
 
-            return redirect()->route('products.index')->with('success', '商品情報を更新しました！');
-        } catch (\Exception $e) {
-            return back()->with('error', '更新中にエラーが発生しました：' . $e->getMessage());
-        }
+        return redirect()->route('products.index')->with('success', '商品情報を更新しました！');
     }
+
 
 
 
