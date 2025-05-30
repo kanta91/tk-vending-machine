@@ -17,20 +17,30 @@ class ProductController extends Controller
         $keyword = $request->input('keyword');
         $company_id = $request->input('company_id');
 
-        $query = Product::query();
+        $query = Product::with('company');
 
-        if (!empty($keyword)) {
+        
+        if ($keyword) {
             $query->where('product_name', 'like', "%{$keyword}%");
         }
 
-        if (!empty($company_id)) {
+        if ($company_id) {
             $query->where('company_id', $company_id);
         }
 
         $products = $query->get();
         $companies = Company::all();
 
-        return view('products.index', compact('products', 'keyword', 'company_id', 'companies'));
+        if($request->ajax()){
+            return view('products.partials.product_table',compact('products')); 
+        }
+
+        return view('products.index', [
+        'products' => $products,
+        'companies' => $companies,
+        'keyword' => $keyword,
+        'company_id' => $company_id,
+    ]);
     }
 
     public function create()
