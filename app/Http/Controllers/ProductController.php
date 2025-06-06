@@ -64,7 +64,12 @@ class ProductController extends Controller
         'price_max' =>$price_max,
         'stock_min' =>$stock_min,
         'stock_max' =>$stock_max,
-    ]);
+        ]);
+
+        if ($price_min && $price_max && $price_min > $price_max) {
+            return back()->with('error', '価格の最小値は最大値以下にしてください');
+}
+
     }
 
     public function create()
