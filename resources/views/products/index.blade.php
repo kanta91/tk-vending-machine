@@ -32,20 +32,20 @@
 
         <div class="row">
 
-        <div class="col-md-3">
-            <input type="number" name="price_min" class="form-control" placeholder="価格（最小）" value="{{old('price_min',request('price_min'))}}">
-        </div>
-        <div class="col-md-3">
-            <input type="number" name="price_max" class="form-control" placeholder="価格（最大）" value="{{old('price_max',request('price_max'))}}">
-        </div>
+            <div class="col-md-3">
+                <input type="number" name="price_min" class="form-control" placeholder="価格（最小）" value="{{old('price_min',request('price_min'))}}">
+            </div>
+            <div class="col-md-3">
+                <input type="number" name="price_max" class="form-control" placeholder="価格（最大）" value="{{old('price_max',request('price_max'))}}">
+            </div>
 
 
-        <div class="col-md-3">
-            <input type="number" name="stock_min" class="form-control" placeholder="在庫数（最小）"value="{{old('stock_min',request('stock_min'))}}">
-        </div>
-        <div class="col-md-3">
-            <input type="number" name="stock_max" class="form-control" placeholder="在庫数（最大）"value="{{old('stock_max',request('stock_max'))}}">
-        </div>
+            <div class="col-md-3">
+                <input type="number" name="stock_min" class="form-control" placeholder="在庫数（最小）"value="{{old('stock_min',request('stock_min'))}}">
+            </div>
+            <div class="col-md-3">
+                <input type="number" name="stock_max" class="form-control" placeholder="在庫数（最大）"value="{{old('stock_max',request('stock_max'))}}">
+            </div>
         </div>
     </form>
 
